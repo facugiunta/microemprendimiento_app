@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 
@@ -14,6 +16,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   bool _isRegisterMode = false;
   final _nameController = TextEditingController();
+  TextEditingController get emailController => _emailController;
+  TextEditingController get passController => _passwordController;
 
   @override
   void dispose() {
@@ -175,12 +179,33 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: ElevatedButton(
                           onPressed: authProvider.isLoading
                               ? null
-                              : () {
-                                  if (_isRegisterMode) {
-                                    _handleRegister(context);
-                                  } else {
-                                    _handleLogin(context);
-                                  }
+                              : () async {
+                                  print("CLICK LOGIN");
+
+                                  final url = Uri.parse(
+                                    "https://microemprendimiento-app.onrender.com/api/auth/login",
+                                  );
+                                  final res = await http.post(
+                                    url,
+                                    headers: {"Content-Type": "application/json"},
+                                    body: jsonEncode({
+                                      "email": emailController.text.trim(),
+                                      "password": passController.text,
+                                    }),
+                                  );
+
+                                  print("STATUS: ${res.statusCode}");
+                                  print("BODY: ${res.body}");
+
+                                  if (!mounted) return;
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        "Login status: ${res.statusCode}",
+                                      ),
+                                    ),
+                                  );
                                 },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue.shade700,

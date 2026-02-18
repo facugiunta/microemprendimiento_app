@@ -1,27 +1,12 @@
-import 'dart:io';
-
 class ApiConfig {
-  static const String _apiBaseFromEnv = String.fromEnvironment(
-    'API_BASE_URL',
-    defaultValue: '',
-  );
+  // Base URL apuntando a Render
+  static const String baseUrl =
+      "https://microemprendimiento-app.onrender.com/api";
 
-  static String get baseUrl {
-    if (_apiBaseFromEnv.isNotEmpty) {
-      return _apiBaseFromEnv;
-    }
-
-    if (Platform.isAndroid) {
-      // For local development on Android emulator.
-      return 'http://10.0.2.2:3000/api';
-    } else if (Platform.isIOS) {
-      return 'http://localhost:3000/api'; // iOS Simulator
-    } else {
-      return 'http://localhost:3000/api'; // Windows, macOS
-    }
-  }
-
+  // Timeout para requests HTTP
   static const int timeoutSeconds = 15;
+
+  // Keys para almacenamiento local
   static const String tokenKey = 'jwt_token';
   static const String userKey = 'user_data';
 }
