@@ -1,0 +1,18 @@
+# Node
+node_modules/
+npm-debug.log
+package-lock.json
+
+# Flutter
+.build/
+.dart_tool/
+.metadata
+android/.gradle
+ios/Pods
+
+# Mac / Windows
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
